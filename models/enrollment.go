@@ -21,7 +21,7 @@ type EnrollmentInfo struct {
 	EnrollmentDate time.Time `json:"enrollmentDate"`
 }
 
-type CreateEnrollmentReq struct {
+type EnrollmentDto struct {
 	StudentID      uint      `json:"studentId"`
 	CourseID       uint      `json:"courseId"`
 	EnrollmentDate time.Time `json:"enrollmentDate"`

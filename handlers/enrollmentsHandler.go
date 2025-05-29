@@ -12,7 +12,7 @@ import (
 )
 
 func CreateEnrollmentHandler(w http.ResponseWriter, r *http.Request) {
-	var req models.CreateEnrollmentReq
+	var req models.EnrollmentDto
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		utils.RespondWithError(w, "Invalid request format", http.StatusBadRequest)
 		return
@@ -57,6 +57,41 @@ func GetEnrollmentByIdHandler(w http.ResponseWriter, r *http.Request) {
 
 	var enrollment models.EnrollmentInfo
 	utils.DB.First(&enrollment, id)
+
+	utils.RespondWithJSON(w, enrollment)
+}
+
+func UpdateEnrollmentHandler(w http.ResponseWriter, r *http.Request) {
+	idString := chi.URLParam(r, "id")
+
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		utils.RespondWithError(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	var req models.EnrollmentDto
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		utils.RespondWithError(w, "Invalid request format", http.StatusBadRequest)
+		return
+	}
+
+	var enrollment models.Enrollment
+	result := utils.DB.First(&enrollment, id)
+	if result.Error != nil {
+		utils.RespondWithError(w, "Enrollment not found", http.StatusBadRequest)
+		return
+	}
+
+	enrollment.StudentID = req.StudentID
+	enrollment.CourseID = req.CourseID
+	enrollment.EnrollmentDate = req.EnrollmentDate
+
+	result = utils.DB.Save(&enrollment)
+	if result.Error != nil {
+		utils.RespondWithError(w, "Unable to save enrollment", http.StatusInternalServerError)
+		return
+	}
 
 	utils.RespondWithJSON(w, enrollment)
 }

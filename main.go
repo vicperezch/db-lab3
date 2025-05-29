@@ -24,6 +24,7 @@ func main() {
 	r.Post("/api/enrollments", handlers.CreateEnrollmentHandler)
 	r.Get("/api/enrollments", handlers.GetEnrollmentsHandler)
 	r.Get("/api/enrollments/{id}", handlers.GetEnrollmentByIdHandler)
+	r.Put("/api/enrollments/{id}", handlers.UpdateEnrollmentHandler)
 
 	log.Println("Server starting on http://localhost:8080...")
 	http.ListenAndServe(":8080", r)
