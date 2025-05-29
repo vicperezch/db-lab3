@@ -1,20 +1,34 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func messageHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
-	fmt.Fprintln(w, "pong")
-}
+var db *gorm.DB
 
 func main() {
-	http.HandleFunc("/ping", messageHandler)
+	dsn := "host=db user=postgres password=postgres dbname=lab3 port=5432 sslmode=disable TimeZone=UTC"
 
-	fmt.Println("Server starting on http://localhost:8080...")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Println("Server failed:", err)
+	var err error
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Could not connect to database")
 	}
+
+	r := chi.NewRouter()
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowCredentials: true,
+	}))
+
+	log.Println("Server starting on http://localhost:8080...")
+	http.ListenAndServe(":8080", r)
 }
