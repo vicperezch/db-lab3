@@ -22,6 +22,7 @@ func main() {
 	}))
 
 	r.Get("/api/enrollments", handlers.GetEnrollmentsHandler)
+	r.Get("/api/enrollments/{id}", handlers.GetEnrollmentByIdHandler)
 
 	log.Println("Server starting on http://localhost:8080...")
 	http.ListenAndServe(":8080", r)
