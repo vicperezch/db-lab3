@@ -33,6 +33,12 @@ func main() {
 	r.Put("/api/students/{id}", handlers.UpdateStudentHandler)
 	r.Delete("/api/students/{id}", handlers.DeleteStudentHandler)
 
+	r.Post("/api/courses", handlers.CreateCourseHandler)
+	r.Get("/api/courses", handlers.GetCoursesHandler)
+	r.Get("/api/courses/{id}", handlers.GetCourseByIdHandler)
+	r.Put("/api/courses/{id}", handlers.UpdateCourseHandler)
+	r.Delete("/api/courses/{id}", handlers.DeleteCourseHandler)
+
 	log.Println("Server starting on http://localhost:8080...")
 	http.ListenAndServe(":8080", r)
 }

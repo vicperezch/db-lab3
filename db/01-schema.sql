@@ -23,8 +23,8 @@ CREATE TABLE enrollments (
     student_id INTEGER NOT NULL,
     course_id INTEGER NOT NULL,
     enrollment_date DATE NOT NULL CHECK (enrollment_date <= CURRENT_DATE),
-    FOREIGN KEY (student_id) REFERENCES students(id),
-    FOREIGN KEY (course_id) REFERENCES courses(id)
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 );
 
 CREATE OR REPLACE VIEW enrollments_info AS
