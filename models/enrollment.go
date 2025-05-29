@@ -21,6 +21,12 @@ type EnrollmentInfo struct {
 	EnrollmentDate time.Time `json:"enrollmentDate"`
 }
 
+type CreateEnrollmentReq struct {
+	StudentID      uint      `json:"studentId"`
+	CourseID       uint      `json:"courseId"`
+	EnrollmentDate time.Time `json:"enrollmentDate"`
+}
+
 func (EnrollmentInfo) TableName() string {
 	return "enrollments_info"
 }

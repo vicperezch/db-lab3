@@ -21,6 +21,7 @@ func main() {
 		AllowCredentials: true,
 	}))
 
+	r.Post("/api/enrollments", handlers.CreateEnrollmentHandler)
 	r.Get("/api/enrollments", handlers.GetEnrollmentsHandler)
 	r.Get("/api/enrollments/{id}", handlers.GetEnrollmentByIdHandler)
 

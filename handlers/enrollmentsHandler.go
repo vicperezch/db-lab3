@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"lab3-backend/models"
 	"lab3-backend/utils"
 	"log"
@@ -9,6 +10,28 @@ import (
 
 	"github.com/go-chi/chi/v5"
 )
+
+func CreateEnrollmentHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.CreateEnrollmentReq
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		utils.RespondWithError(w, "Invalid request format", http.StatusBadRequest)
+		return
+	}
+
+	enrollment := models.Enrollment{
+		StudentID:      req.StudentID,
+		CourseID:       req.CourseID,
+		EnrollmentDate: req.EnrollmentDate,
+	}
+
+	result := utils.DB.Create(&enrollment)
+	if result.Error != nil {
+		utils.RespondWithError(w, "Unable to create enrollment", http.StatusInternalServerError)
+		return
+	}
+
+	utils.RespondWithJSON(w, enrollment)
+}
 
 func GetEnrollmentsHandler(w http.ResponseWriter, r *http.Request) {
 	var enrollments []models.EnrollmentInfo
