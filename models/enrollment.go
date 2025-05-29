@@ -10,3 +10,17 @@ type Enrollment struct {
 	Course         Course    `json:"course"`
 	EnrollmentDate time.Time `json:"enrollmentDate" gorm:"column:enrollment_date"`
 }
+
+type EnrollmentInfo struct {
+	ID             uint      `json:"id"`
+	CourseName     string    `json:"courseName"`
+	FirstName      string    `json:"firstName"`
+	LastName       string    `json:"lastName"`
+	StudentLevel   string    `json:"studentLevel"`
+	CourseMode     string    `json:"courseMode"`
+	EnrollmentDate time.Time `json:"enrollmentDate"`
+}
+
+func (EnrollmentInfo) TableName() string {
+	return "enrollments_info"
+}

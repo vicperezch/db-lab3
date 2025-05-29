@@ -26,3 +26,16 @@ CREATE TABLE enrollments (
     FOREIGN KEY (student_id) REFERENCES students(id),
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
+
+CREATE OR REPLACE VIEW enrollments_info AS
+SELECT 
+	e.id AS id,
+	c.name AS course_name,
+	s.first_name AS first_name,
+	s.last_name AS last_name,
+	s.level AS student_level,
+	c.mode AS course_mode,
+	e.enrollment_date AS enrollment_date
+FROM enrollments AS e
+LEFT JOIN students AS s ON s.id = e.student_id
+LEFT JOIN courses AS c ON c.id = e.course_id;
