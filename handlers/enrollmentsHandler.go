@@ -95,3 +95,21 @@ func UpdateEnrollmentHandler(w http.ResponseWriter, r *http.Request) {
 
 	utils.RespondWithJSON(w, enrollment)
 }
+
+func DeleteEnrollmentHandler(w http.ResponseWriter, r *http.Request) {
+	idString := chi.URLParam(r, "id")
+
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		utils.RespondWithError(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	result := utils.DB.Delete(&models.Enrollment{}, id)
+	if result.Error != nil {
+		utils.RespondWithError(w, "Unable to delete enrollment", http.StatusInternalServerError)
+		return
+	}
+
+	utils.RespondWithJSON(w, "Enrollment deleted successfully")
+}
